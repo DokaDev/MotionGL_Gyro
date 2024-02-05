@@ -40,6 +40,7 @@ int main() {
     // Vertex Shader
     const char* vertexShaderSource = "#version 330 core\n"
         "layout (location = 0) in vec3 aPos;\n"
+        "uniform mat4 model;"
         "void main()\n"
         "{\n"
         "   gl_Position = vec4(aPos, 1.0);\n"
@@ -86,10 +87,24 @@ int main() {
     while(!glfwWindowShouldClose(window)) {
         processInput(window);
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // TODO: Set the code that renders the Tetrahedron
+        // Active shader
+        glUseProgram(shaderProgram);
+
+        // Create transformations
+        glm::mat4 model = glm::mat4(1.0f);
+        float angle = (float)glfwGetTime() * glm::radians(50.0f);
+        model = glm::rotate(model, angle, glm::vec3(1.0, 0.0, 0.0));
+
+        // Get matrix's uniform location and set matrix
+        unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+        // Draw the tetrahedron
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // Swap the buffer and poll IO events
         glfwSwapBuffers(window);
@@ -120,7 +135,7 @@ unsigned int compileShader(const char* v, const char* f) {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    glUseProgram(shaderProgram);
+    //glUseProgram(shaderProgram);
     return shaderProgram;
 }
 
