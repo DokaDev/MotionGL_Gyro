@@ -1,10 +1,5 @@
 ## MotionGL_Gyro
 
-<<<<<<< HEAD
-OpenGL 
-
-#### 
-=======
 Tetrahedron rendering program developed with OpenGL
 
 Compiled with a Visual C++
@@ -38,4 +33,3 @@ vcpkg integrate install
 ```
 
 This guide provides instructions for setting up the necessary libraries for the project using vcpkg.
->>>>>>> c6cf910464ad2c29a98b6b4900efa778bf2e955b
