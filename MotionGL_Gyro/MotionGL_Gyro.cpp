@@ -37,7 +37,6 @@ int main() {
         return -1;
     }
 
-    // TODO: Set the code that is related to shader compilation and setting
     // Vertex Shader
     const char* vertexShaderSource = "#version 330 core\n"
         "layout (location = 0) in vec3 aPos;\n"
@@ -56,7 +55,33 @@ int main() {
 
     // Compile the shader
     unsigned int shaderProgram = compileShader(vertexShaderSource, fragmentShaderSource);
-    
+
+    // Render the Tetrahedron
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
+     0.0f,  0.5f, 0.0f
+    };
+
+    unsigned int VBO, VAO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    // Bind VAO
+    glBindVertexArray(VAO);
+
+    // Copy the vertices array into buffer
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Set the vertex attributes pointers
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Unbind
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
     // Render loop
     while(!glfwWindowShouldClose(window)) {
         processInput(window);
@@ -97,6 +122,10 @@ unsigned int compileShader(const char* v, const char* f) {
 
     glUseProgram(shaderProgram);
     return shaderProgram;
+}
+
+void renderTetrahedron() {
+
 }
 
 void processInput(GLFWwindow* window) {
